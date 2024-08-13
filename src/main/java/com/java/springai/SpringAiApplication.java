@@ -34,7 +34,7 @@ public class SpringAiApplication {
       // Print the API key to verify it is read correctly
 
       String apiKey = aiConfig.getApiKey();
-      String model = "gpt-4"; // 하드코딩된 모델
+      String model = "gpt-4o-mini"; // 하드코딩된 모델
       String endpoint = "https://api.openai.com/v1/chat/completions";
       String systemCommand = "친구처럼 다정하게 말해줘"; // 하드코딩된 systemCommand
       HttpHeaders headers = new HttpHeaders();
@@ -59,11 +59,13 @@ public class SpringAiApplication {
         ));
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<Map> responseEntity = restTemplate.exchange(endpoint, HttpMethod.POST, requestEntity, Map.class);
+        ResponseEntity<Map> responseEntity = restTemplate.exchange(endpoint, HttpMethod.POST,
+            requestEntity, Map.class);
 
         Map<String, Object> responseBody = responseEntity.getBody();
         if (responseBody != null) {
-          List<Map<String, Object>> choices = (List<Map<String, Object>>) responseBody.get("choices");
+          List<Map<String, Object>> choices = (List<Map<String, Object>>) responseBody.get(
+              "choices");
           if (choices != null && !choices.isEmpty()) {
             Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
             String content = (String) message.get("content");
